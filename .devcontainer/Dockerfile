@@ -93,11 +93,11 @@ using namespace atcoder;
 
 // ---- fast io & formatting ----
 struct Init {
-  Init() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout << setprecision(13);
-  }
+    Init() {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout << setprecision(13);
+    }
 } init;
 
 // ---- aliases ----
@@ -144,35 +144,35 @@ inline void print_double(double x, int n = 10) {
 }
 
 template <class T> inline bool chmax(T &a, const T &b) {
-  if (a < b) {
-    a = b;
-    return true;
-  }
-  return false;
+    if (a < b) {
+        a = b;
+        return true;
+    }
+    return false;
 }
 
 template <class T> inline bool chmin(T &a, const T &b) {
-  if (a > b) {
-    a = b;
-    return true;
-  }
-  return false;
+    if (a > b) {
+        a = b;
+        return true;
+    }
+    return false;
 }
 
 template <class T> vector<T> read_vec(int n) {
-  vector<T> v(n);
-  for (auto &x : v)
-    cin >> x;
-  return v;
+    vector<T> v(n);
+    for (auto &x : v)
+        cin >> x;
+    return v;
 }
 
 template <class T> void print_vec(const vector<T> &v, string sep = " ") {
-  for (int i = 0; i < (int)v.size(); i++) {
-    if (i)
-      cout << sep;
-    cout << v[i];
-  }
-  cout << el;
+    for (int i = 0; i < (int)v.size(); i++) {
+        if (i)
+        cout << sep;
+        cout << v[i];
+    }
+    cout << el;
 }
 
 // ---- snippets paste zone ----
@@ -181,13 +181,13 @@ template <class T> void print_vec(const vector<T> &v, string sep = " ") {
 
 // ---- solve ----
 static void solve() {
-  // TODO: write your solution here
+    // TODO: write your solution here
 }
 
 // ---- main ----
 int main() {
-  solve();
-  return 0;
+    solve();
+    return 0;
 }
 EOF
 
