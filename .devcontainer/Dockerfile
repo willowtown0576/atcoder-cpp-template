@@ -1,38 +1,38 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Tokyo
 
 # ============================================================
-# 基本パッケージ + Python + 各種ツール（補完など）
+# 基本パッケージ + Python + Node.js + C++ + 各種ツール
 # ============================================================
 RUN apt-get update && apt-get install -y \
     curl wget git unzip \
-    build-essential software-properties-common \
+    build-essential \
     ca-certificates gnupg lsb-release tzdata \
     python3 python3-pip python3-venv \
+    nodejs npm \
     make \
     time \
-    gdb clang-format \
+    gdb \
+    clangd clang-format \
+    gcc-13 g++-13 \
     bash-completion \
     less \
     && rm -rf /var/lib/apt/lists/*
 
-# clangd を新しくする（clangd-18）
-RUN curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor > /usr/share/keyrings/llvm.gpg \
-    && echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main" \
-    > /etc/apt/sources.list.d/llvm.list
-
-RUN apt-get update && apt-get install -y clangd-18 \
-    && update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-18 180 \
-    && rm -rf /var/lib/apt/lists/*
+# ============================================================
+# g++/gcc のデフォルトを 13 に
+# ============================================================
+RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 130 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 130
 
 # ============================================================
 # bash補完・操作性向上（Tab補完・履歴）
 # ============================================================
 RUN cat <<'EOF' >> /etc/bash.bashrc
 
-# ===== bash completion (enabled by default) =====
+# ===== bash completion =====
 if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
@@ -54,34 +54,16 @@ RUN cat <<'EOF' >> /etc/bash.bashrc
 export PS1="\[\e[32m\]\u@\h\[\e[0m\]:\[\e[34m\]\w\[\e[0m\] \$ "
 EOF
 
-# ============================================================
-# --- C++23設定：g++-13 ---
-# ============================================================
-RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test \
-    && apt-get update && apt-get install -y g++-13 gcc-13 \
-    && rm -rf /var/lib/apt/lists/*
-
-# g++/gccのデフォルトを13に
-RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 130 \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 130
-
-# ============================================================
-# Node.js 18.x（acc用）
-# ============================================================
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get update && apt-get install -y nodejs \
-    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /workspace
 
 # ============================================================
 # atcoder-cli / online-judge-tools / aclogin
 # ============================================================
 RUN npm install -g atcoder-cli \
-    && pip3 install --no-cache-dir online-judge-tools aclogin
+    && pip3 install --no-cache-dir --break-system-packages online-judge-tools aclogin
 
 # ============================================================
-# （任意）AtCoder Library
+# AtCoder Library
 # ============================================================
 RUN git clone --depth 1 https://github.com/atcoder/ac-library.git /opt/ac-library \
     && ln -s /opt/ac-library/atcoder /usr/local/include/atcoder
