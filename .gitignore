@@ -1,0 +1,27 @@
+# build artifacts
+a.out
+*.exe
+*.dSYM/
+*.o
+*.obj
+
+# atcoder-cli / oj configs (inside container)
+**/.cache/
+**/.config/
+**/.local/
+
+# acc generated dirs
+contests/**/bin/
+contests/**/tests/
+contests/**/submit/
+contests/**/.acc*
+
+# obsidian
+memo/.obsidian
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.zed/

@@ -1,0 +1,9 @@
+{
+    "name": "atcoder-cpp",
+    "build": { "dockerfile": "Dockerfile" },
+    "workspaceFolder": "/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "remoteEnv": {
+        "SHELL": "/bin/bash"
+    }
+}
